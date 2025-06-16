@@ -17,6 +17,7 @@ import { getUserWorkouts } from './handlers/get_user_workouts';
 import { completeWorkout } from './handlers/complete_workout';
 import { getExercises } from './handlers/get_exercises';
 import { createExercise } from './handlers/create_exercise';
+import { seedDatabase } from './handlers/seed_database';
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -53,23 +54,36 @@ const appRouter = router({
   createExercise: publicProcedure
     .input(createExerciseInputSchema)
     .mutation(({ input }) => createExercise(input)),
+  
+  // Seed the database with initial exercises
+  seedDatabase: publicProcedure
+    .mutation(() => seedDatabase()),
 });
 
 export type AppRouter = typeof appRouter;
 
 async function start() {
-  const port = process.env['SERVER_PORT'] || 2022;
-  const server = createHTTPServer({
-    middleware: (req, res, next) => {
-      cors()(req, res, next);
-    },
-    router: appRouter,
-    createContext() {
-      return {};
-    },
-  });
-  server.listen(port);
-  console.log(`TRPC server listening at port: ${port}`);
+  try {
+    // Auto-seed database on startup
+    console.log('🔍 Checking database initialization...');
+    await seedDatabase();
+    
+    const port = process.env['SERVER_PORT'] || 2022;
+    const server = createHTTPServer({
+      middleware: (req, res, next) => {
+        cors()(req, res, next);
+      },
+      router: appRouter,
+      createContext() {
+        return {};
+      },
+    });
+    server.listen(port);
+    console.log(`🚀 TRPC server listening at port: ${port}`);
+  } catch (error) {
+    console.error('💥 Failed to start server:', error);
+    process.exit(1);
+  }
 }
 
 start();
