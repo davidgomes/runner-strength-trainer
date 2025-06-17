@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -65,7 +64,7 @@ export function WorkoutGenerator({ userId, onWorkoutGenerated }: WorkoutGenerato
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="duration">Workout Duration (minutes)</Label>
+        <Label htmlFor="duration" className="dark:text-gray-200">Workout Duration (minutes)</Label>
         <Input
           id="duration"
           type="number"
@@ -81,18 +80,18 @@ export function WorkoutGenerator({ userId, onWorkoutGenerated }: WorkoutGenerato
           className="text-lg"
           required
         />
-        <p className="text-sm text-gray-600">Choose between 15-120 minutes</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Choose between 15-120 minutes</p>
       </div>
 
       <div className="space-y-4">
-        <Label className="text-base font-semibold">Available Equipment</Label>
-        <p className="text-sm text-gray-600 mb-4">
+        <Label className="text-base font-semibold dark:text-gray-200">Available Equipment</Label>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
           Select all equipment you have access to at your gym
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {EQUIPMENT_OPTIONS.map((option) => (
-            <Card key={option.value} className="cursor-pointer hover:bg-gray-50 transition-colors">
+            <Card key={option.value} className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center space-x-3">
                   <Checkbox
@@ -104,7 +103,7 @@ export function WorkoutGenerator({ userId, onWorkoutGenerated }: WorkoutGenerato
                   />
                   <Label 
                     htmlFor={option.value} 
-                    className="flex items-center gap-2 cursor-pointer font-medium"
+                    className="flex items-center gap-2 cursor-pointer font-medium dark:text-gray-200"
                   >
                     <span className="text-xl">{option.emoji}</span>
                     {option.label}

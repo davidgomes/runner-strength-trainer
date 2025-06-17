@@ -1,4 +1,3 @@
-
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,10 +31,10 @@ export function WorkoutHistory({ workouts, onCompleteWorkout, isLoading }: Worko
     return (
       <Card>
         <CardContent className="text-center py-12">
-          <h3 className="text-xl font-semibold text-gray-600 mb-2">
+          <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
             No workout history yet
           </h3>
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-gray-400">
             Your completed and saved workouts will appear here
           </p>
         </CardContent>
@@ -50,7 +49,7 @@ export function WorkoutHistory({ workouts, onCompleteWorkout, isLoading }: Worko
     <div className="space-y-6">
       {pendingWorkouts.length > 0 && (
         <div>
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 dark:text-gray-200">
             ⏳ Pending Workouts ({pendingWorkouts.length})
           </h2>
           <div className="space-y-4">
@@ -70,7 +69,7 @@ export function WorkoutHistory({ workouts, onCompleteWorkout, isLoading }: Worko
 
       {completedWorkouts.length > 0 && (
         <div>
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 dark:text-gray-200">
             ✅ Completed Workouts ({completedWorkouts.length})
           </h2>
           <div className="space-y-4">
@@ -104,13 +103,13 @@ function WorkoutCard({ workout, isExpanded, onToggle, onComplete, isLoading }: W
     <Card>
       <Collapsible open={isExpanded} onOpenChange={onToggle}>
         <CollapsibleTrigger asChild>
-          <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors">
+          <CardHeader className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                {isExpanded ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+                {isExpanded ? <ChevronDown className="h-5 w-5 dark:text-gray-300" /> : <ChevronRight className="h-5 w-5 dark:text-gray-300" />}
                 <div>
-                  <CardTitle className="text-lg">{workout.name}</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-lg dark:text-gray-100">{workout.name}</CardTitle>
+                  <CardDescription className="dark:text-gray-400">
                     {workout.duration_minutes} minutes • {workout.exercises.length} exercises •{' '}
                     Created {workout.created_at.toLocaleDateString()}
                   </CardDescription>
@@ -119,11 +118,11 @@ function WorkoutCard({ workout, isExpanded, onToggle, onComplete, isLoading }: W
               <div className="flex items-center gap-2">
                 {workout.is_completed ? (
                   <div className="flex flex-col items-end gap-1">
-                    <Badge variant="secondary" className="bg-green-100 text-green-800">
+                    <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
                       ✅ Completed
                     </Badge>
                     {workout.completed_at && (
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
                         {workout.completed_at.toLocaleDateString()}
                       </span>
                     )}
@@ -151,7 +150,7 @@ function WorkoutCard({ workout, isExpanded, onToggle, onComplete, isLoading }: W
         <CollapsibleContent>
           <CardContent className="pt-0">
             <div className="mb-4">
-              <h4 className="font-semibold mb-2">Equipment Used:</h4>
+              <h4 className="font-semibold mb-2 dark:text-gray-200">Equipment Used:</h4>
               <div className="flex flex-wrap gap-2">
                 {workout.equipment_used.map((equipment) => (
                   <Badge key={equipment} variant="outline">
@@ -162,20 +161,20 @@ function WorkoutCard({ workout, isExpanded, onToggle, onComplete, isLoading }: W
             </div>
 
             <div className="space-y-3">
-              <h4 className="font-semibold">Exercises:</h4>
+              <h4 className="font-semibold dark:text-gray-200">Exercises:</h4>
               {workout.exercises
                 .sort((a, b) => a.order_index - b.order_index)
                 .map((exercise, index) => (
-                  <div key={exercise.id} className="border rounded p-3 bg-gray-50">
+                  <div key={exercise.id} className="border rounded p-3 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                     <div className="flex items-start justify-between mb-2">
-                      <h5 className="font-medium">
+                      <h5 className="font-medium dark:text-gray-100">
                         {index + 1}. {exercise.name}
                       </h5>
                       <Badge variant="secondary" className="text-xs">
                         {exercise.muscle_group}
                       </Badge>
                     </div>
-                    <div className="flex gap-4 text-sm text-gray-600">
+                    <div className="flex gap-4 text-sm text-gray-600 dark:text-gray-300">
                       <span><strong>Sets:</strong> {exercise.sets}</span>
                       <span><strong>Reps:</strong> {exercise.reps}</span>
                       <span><strong>Rest:</strong> {exercise.rest_seconds}s</span>
