@@ -12,10 +12,18 @@ export const generateWorkout = async (input: GenerateWorkoutInput): Promise<Work
       sql`equipment_needed ? ${equipment}`
     );
 
-    const availableExercises = await db.select()
+    let availableExercises = await db.select()
       .from(exercisesTable)
       .where(or(...equipmentConditions))
       .execute();
+
+    // Fallback logic: if no exercises found for selected equipment, use bodyweight exercises
+    if (availableExercises.length === 0) {
+      availableExercises = await db.select()
+        .from(exercisesTable)
+        .where(sql`equipment_needed ? 'bodyweight_only'`)
+        .execute();
+    }
 
     if (availableExercises.length === 0) {
       throw new Error('No exercises found for the available equipment');
